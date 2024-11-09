@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pleasure-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pleasure-app
+  template:
+    metadata:
+      labels:
+        app: pleasure-app
+    spec:
+      containers:
+        - name: pleasure-container
+          image: your-docker-repo/pleasure:latest  # Замените на ваш образ
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_PASSWORD

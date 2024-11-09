@@ -1,0 +1,28 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/pleasure_message
+    username: postgres
+    password: postgres
+    pool:
+      initial-size: 5
+      max-size: 20
+      max-idle-time: 30s
+      min-idle-time: 5s
+  flyway:
+    enabled: false
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/pleasure_message
+
+server:
+  port: 8080
+#http://localhost:8080/webjars/swagger-ui/index.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+jwt:
+  secret: mysecretisjustlongenoughforhmac512-01234567890123456789012345678
+  expiration: 28800

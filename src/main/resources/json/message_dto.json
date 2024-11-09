@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": ["integer", "null"]
+    },
+    "user_id": {
+      "type": "integer"
+    },
+    "chat_id": {
+      "type": "integer"
+    },
+    "content": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["userId", "chatId", "content"]
+}
