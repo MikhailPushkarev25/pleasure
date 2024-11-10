@@ -1,23 +1,25 @@
 spring:
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/pleasure_message
+    url: r2dbc:postgresql://postgres:5432/pleasure_message
     username: postgres
-    password: postgres
+    password: ${DB_PASSWORD}
     pool:
       initial-size: 5
       max-size: 20
       max-idle-time: 30s
       min-idle-time: 5s
   flyway:
-    enabled: false
+    enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
     user: postgres
     password: postgres
-    url: jdbc:postgresql://localhost:5432/pleasure_message
+    url: jdbc:postgresql://postgres:5432/pleasure_message
 
 server:
   port: 8080
+  servlet:
+    context-path: /api
 #http://localhost:8080/webjars/swagger-ui/index.html
 springdoc:
   swagger-ui:

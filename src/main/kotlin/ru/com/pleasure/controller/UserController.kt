@@ -3,15 +3,13 @@ package ru.com.pleasure.controller
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 import ru.com.pleasure.service.JWTUtil
 import ru.com.pleasure.service.UserService
 import ru.pleasure.dto.RequestUser
 
+@CrossOrigin(origins = ["*"])
 @RestController
 @RequestMapping("/users")
 class UserController(

@@ -9,7 +9,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 import ru.com.pleasure.service.AuthenticationManager
 import ru.com.pleasure.service.SecurityContextRepository
 
-
 @Configuration
 @EnableWebFluxSecurity
 class SecurityConfig(
@@ -30,12 +29,6 @@ class SecurityConfig(
                 it.pathMatchers("/users/register", "/users/login").permitAll()
                     .pathMatchers("/v3/api-docs/**", "/webjars/swagger-ui/**").permitAll()
                     .anyExchange().authenticated()
-            }
-            .httpBasic {
-                it.disable()
-            }
-            .formLogin {
-                it.disable()
             }
             .build()
     }
