@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.test.StepVerifier
 import ru.com.pleasure.config.AbstractContainerTest
@@ -15,6 +16,7 @@ import ru.pleasure.dto.RequestUser
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class UserControllerIntegrationTest : AbstractContainerTest() {
 
     @Autowired

@@ -25,7 +25,9 @@ class UserService(
     val log = KotlinLogging.logger {  }
 
     fun authenticate(username: String, password: String): Mono<UserDetails> {
+        log.info("Searching for user: $username")
         return userRepository.findByUsername(username)
+            .doOnSubscribe { log.info("User found: $username") }
             .switchIfEmpty(Mono.error(UsernameNotFoundException("User not found for username: $username")))
             .flatMap { user ->
                 if (!passwordEncoder.matches(password, user.password)) {
@@ -34,7 +36,7 @@ class UserService(
                     Mono.just(
                         org.springframework.security.core.userdetails.User.withUsername(user.username)
                             .password(user.password)
-                            .authorities(emptyList()) // Добавьте роли, если нужно
+                            .authorities(emptyList())
                             .build()
                     )
                 }

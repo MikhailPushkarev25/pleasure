@@ -13,11 +13,6 @@ services:
       - "5432:5432"
     networks:
       - mynetwork
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d pleasure_message"]
-      interval: 30s
-      retries: 5
-      timeout: 10s
 
   app:
     build: .
@@ -30,10 +25,15 @@ services:
       - SPRING_FLYWAY_USER=postgres
       - SPRING_FLYWAY_PASSWORD=postgres
       - SPRING_FLYWAY_LOCATIONS=classpath:db/migration
+      - JWT_SECRET=mysecretisjustlongenoughforhmac512-01234567890123456789012345678
+      - EXPIRATION=28800
+      - CONTEXT_PATH=/api
+      - PORT=8080
+      - SWAGGER_PATH=/swagger-ui.html
     depends_on:
       - postgres
     ports:
-      - "8081:8080"
+      - "8080:8081"
     networks:
       - mynetwork
 

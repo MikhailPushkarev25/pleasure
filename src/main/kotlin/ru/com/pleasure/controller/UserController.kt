@@ -9,7 +9,6 @@ import ru.com.pleasure.service.JWTUtil
 import ru.com.pleasure.service.UserService
 import ru.pleasure.dto.RequestUser
 
-@CrossOrigin(origins = ["*"])
 @RestController
 @RequestMapping("/users")
 class UserController(

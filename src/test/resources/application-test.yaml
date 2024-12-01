@@ -17,10 +17,6 @@ spring:
     user: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/pleasure_message
-#http://localhost:8080/webjars/swagger-ui/index.html
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
 
 jwt:
   secret: mysecretisjustlongenoughforhmac512-01234567890123456789012345678
