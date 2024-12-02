@@ -40,9 +40,8 @@ class ChatController(private val chatService: ChatService) {
     }
 
     @DeleteMapping("/{chatId}")
-    suspend fun deleteChat(@PathVariable chatId: Long): ResponseEntity<Void> {
+    suspend fun deleteChat(@PathVariable chatId: Long) {
         chatService.deleteChat(chatId)
-        return ResponseEntity.noContent().build()
     }
 
     @PostMapping("/{chatId}/users")

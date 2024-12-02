@@ -2,6 +2,7 @@ package ru.com.pleasure.service
 
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import ru.com.pleasure.entity.Chat
@@ -30,13 +31,15 @@ class ChatService(
     }
 
     suspend fun deleteChat(chatId: Long) {
-        chatRepository.deleteById(chatId)
-            .switchIfEmpty(Mono.error(Exception("Chat with ID $chatId not found.")))
-            .awaitSingle()
+        val exists = chatRepository.existsById(chatId).awaitSingleOrNull()
+        if (!exists!!) {
+            throw Exception("Chat with ID $chatId not found.")
+        }
+        chatRepository.deleteById(chatId).awaitSingleOrNull()
     }
-    suspend fun addUserToChat(chatId: Long, userId: Long, role: String = "member"): ChatUser {
+    suspend fun addUserToChat(chatId: Long, userId: Long, role: String = "member"): ChatUser? {
         val chatUser = ChatUser(chatId = chatId, userId = userId, role = role)
-        return chatUserRepository.save(chatUser).awaitSingle()
+        return chatUserRepository.save(chatUser).awaitSingleOrNull()
     }
 
     suspend fun removeUserFromChat(chatId: Long, userId: Long): Boolean {

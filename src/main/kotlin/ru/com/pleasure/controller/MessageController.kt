@@ -17,21 +17,25 @@ class MessageController(
     private val chatService: MessageService
 ) {
 
-    @PostMapping("/{chatId}/messages")
+    @PostMapping("/messages")
     suspend fun sendMessage(
-        @PathVariable chatId: Long,
+        @RequestParam chatId: Long,
         @RequestParam userId: Long,
         @RequestParam content: String,
         @RequestParam(required = false) attachments: List<FilePart>?
     ): Mono<ResponseEntity<Message>> {
         return chatService.sendMessage(chatId, userId, content, attachments)
-            .map { message -> ResponseEntity(message, HttpStatus.CREATED) }
+            .map { message ->
+                ResponseEntity(message, HttpStatus.CREATED)
+            }
             .onErrorResume { e ->
-                when (e.message) {
-                    "User not found" -> Mono.just(ResponseEntity(HttpStatus.NOT_FOUND))
-                    "Chat not found" -> Mono.just(ResponseEntity(HttpStatus.NOT_FOUND))
-                    else -> Mono.just(ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR))
-                }
+                Mono.just(
+                    when (e.message) {
+                        "User not found" -> ResponseEntity(HttpStatus.NOT_FOUND)
+                        "Chat not found" -> ResponseEntity(HttpStatus.NOT_FOUND)
+                        else -> ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+                    }
+                )
             }
     }
 

@@ -1,6 +1,7 @@
 package ru.com.pleasure.controller
 
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -31,7 +32,7 @@ class UserController(
     @PostMapping("/register")
     suspend fun register(@RequestBody request: RequestUser): ResponseEntity<String> {
         return try {
-            userService.register(request).awaitSingle()
+            userService.register(request).awaitSingleOrNull()
             ResponseEntity.ok("User registered successfully")
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registration failed")
