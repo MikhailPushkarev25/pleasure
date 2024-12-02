@@ -1,0 +1,91 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "mikhail199546399/pleasure:latest"
+        K8S_NAMESPACE = "pleasure-app"  // Укажите ваш namespace в Kubernetes
+        KUBECONFIG = "/path/to/kubeconfig"  // Путь к конфигу kubectl на Jenkins сервере (если нужно)
+        POSTGRES_HOST = "postgres"  // имя хоста для PostgreSQL сервиса в Kubernetes
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Клонируем репозиторий
+                git 'https://github.com/MikhailPushkarev25/pleasure.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Сборка Docker образа
+                    docker.build(DOCKER_IMAGE)
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Авторизация в Docker Hub (или другом реестре)
+                    withDockerRegistry(credentialsId: 'dockerhub-credentials', url: '') {
+                        docker.image(DOCKER_IMAGE).push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Применяем Kubernetes манифесты
+                    sh """
+                        kubectl apply -f charts/postgres-deployment.yaml
+                        kubectl apply -f charts/deployment.yaml
+                    """
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                script {
+                    // Проверяем, что поды запустились
+                    sh 'kubectl get pods'
+                }
+            }
+        }
+
+        stage('Expose Application') {
+            steps {
+                script {
+                    // Создаем сервис с типом LoadBalancer для доступа к приложению
+                    sh 'kubectl expose deployment pleasure-app --name=pleasure-app-service --port=8080 --target-port=8081 --type=LoadBalancer'
+                }
+            }
+        }
+
+        stage('Wait for LoadBalancer IP') {
+            steps {
+                script {
+                    // Получаем IP адрес сервиса
+                    sh 'kubectl get svc pleasure-app-service -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Здесь можно добавить уведомления (Slack, Email) о завершении пайплайна
+            echo 'Pipeline finished'
+        }
+        success {
+            echo 'Application deployed successfully'
+        }
+        failure {
+            echo 'Pipeline failed'
+        }
+    }
+}

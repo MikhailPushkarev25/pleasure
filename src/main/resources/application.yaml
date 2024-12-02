@@ -20,7 +20,7 @@ server:
   port: ${PORT:8080}
   servlet:
     context-path: ${CONTEXT_PATH}
-#http://localhost:8081/webjars/swagger-ui/index.html
+#http://127.0.0.1:35153/webjars/swagger-ui/index.html
 springdoc:
   swagger-ui:
     path: ${SWAGGER_PATH}

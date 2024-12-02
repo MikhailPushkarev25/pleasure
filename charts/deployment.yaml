@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: pleasure-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: pleasure-app
@@ -13,33 +13,45 @@ spec:
         app: pleasure-app
     spec:
       containers:
-        - name: pleasure-container
-          image: your-docker-repo/pleasure:latest  # Замените на ваш образ
+        - name: pleasure-app
+          image: mikhail199546399/pleasure:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           env:
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DB_HOST
-            - name: DB_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DB_PORT
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DB_NAME
-            - name: DB_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DB_USERNAME
-            - name: DB_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DB_PASSWORD
+            - name: SPRING_R2DBC_URL
+              value: "r2dbc:postgresql://postgres:5432/pleasure_message"
+            - name: SPRING_R2DBC_USERNAME
+              value: "postgres"
+            - name: SPRING_R2DBC_PASSWORD
+              value: "postgres"
+            - name: SPRING_FLYWAY_URL
+              value: "jdbc:postgresql://postgres:5432/pleasure_message"
+            - name: SPRING_FLYWAY_ENABLED
+              value: "true"
+            - name: SPRING_FLYWAY_USER
+              value: "postgres"
+            - name: SPRING_FLYWAY_PASSWORD
+              value: "postgres"
+            - name: SPRING_FLYWAY_LOCATIONS
+              value: "classpath:db/migration"
+            - name: JWT_SECRET
+              value: "mysecretisjustlongenoughforhmac512-01234567890123456789012345678"
+            - name: EXPIRATION
+              value: "28800"
+            - name: CONTEXT_PATH
+              value: "/api"
+            - name: PORT
+              value: "8080"
+            - name: SWAGGER_PATH
+              value: "/swagger-ui.html"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pleasure-app
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8081
+  selector:
+    app: pleasure-app
