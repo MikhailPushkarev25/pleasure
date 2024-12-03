@@ -27,8 +27,7 @@ class UserControllerIntegrationTest : AbstractContainerTest() {
     @Test
     fun `test user registration`() {
         val requestUser = RequestUser().apply {
-            username = "testUsername"
-            surname = "testSurname"
+            fullname = "testUsername"
             email = "testEmail"
             password = "testPassword"
         }
@@ -41,8 +40,7 @@ class UserControllerIntegrationTest : AbstractContainerTest() {
     @Test
     fun `test user login 200`() {
         val requestUser = RequestUser().apply {
-            username = "testUsername"
-            surname = "testSurname"
+            fullname = "testUsername"
             email = "testEmail"
             password = "testPassword"
         }
@@ -65,8 +63,7 @@ class UserControllerIntegrationTest : AbstractContainerTest() {
     @Test
     fun `test user login 401`() {
         val requestUser = RequestUser().apply {
-            username = "testUsername"
-            surname = "testSurname"
+            fullname = "testUsername"
             email = "testEmail"
             password = "testPassword"
         }

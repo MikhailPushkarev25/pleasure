@@ -6,7 +6,5 @@ import ru.com.pleasure.entity.User
 
 interface UserRepository : ReactiveCrudRepository<User, Long> {
 
-    fun findByUsernameAndSurname(username: String, surname: String): Mono<User>
-
-    fun findByUsername(username: String): Mono<User>
+    fun findByEmail(email: String): Mono<User>
 }

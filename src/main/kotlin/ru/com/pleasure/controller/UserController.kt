@@ -12,7 +12,7 @@ import ru.pleasure.dto.RequestUser
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = ["http://localhost:5176"])
+@CrossOrigin(origins = ["*"])
 class UserController(
     private val userService: UserService,
     private val jwtUtil: JWTUtil
@@ -20,7 +20,7 @@ class UserController(
 
     @PostMapping("/login")
     suspend fun login(@RequestBody request: RequestUser): ResponseEntity<String> {
-        return userService.authenticate(request.username, request.password)
+        return userService.authenticate(request.email, request.password)
             .map { userDetails ->
                 val token = jwtUtil.generateToken(userDetails)
                 ResponseEntity.ok(token)

@@ -19,17 +19,17 @@ class UserService(
 
     val log = KotlinLogging.logger {  }
 
-    fun authenticate(username: String, password: String): Mono<UserDetails> {
-        log.info("Searching for user: $username")
-        return userRepository.findByUsername(username)
-            .doOnSubscribe { log.info("User found: $username") }
-            .switchIfEmpty(Mono.error(UsernameNotFoundException("User not found for username: $username")))
+    fun authenticate(email: String, password: String): Mono<UserDetails> {
+        log.info("Searching for user: $email")
+        return userRepository.findByEmail(email)
+            .doOnSubscribe { log.info("User found: $email") }
+            .switchIfEmpty(Mono.error(UsernameNotFoundException("User not found for username: $email")))
             .flatMap { user ->
                 if (!passwordEncoder.matches(password, user.password)) {
                     Mono.error(BadCredentialsException("Invalid password"))
                 } else {
                     Mono.just(
-                        org.springframework.security.core.userdetails.User.withUsername(user.username)
+                        org.springframework.security.core.userdetails.User.withUsername(user.fullName)
                             .password(user.password)
                             .authorities(emptyList())
                             .build()
@@ -40,13 +40,12 @@ class UserService(
 
     fun register(request: RequestUser): Mono<Void> {
         val newUser = User(
-            username = request.username,
+            fullName = request.fullname,
             password = passwordEncoder.encode(request.password),
             email = request.email,
-            surname = request.surname,
         )
         return userRepository.save(newUser)
-            .doOnError { log.error("Error saving user: ${request.username}", it) }
+            .doOnError { log.error("Error saving user: ${request.fullname}", it) }
             .then()
     }
 }

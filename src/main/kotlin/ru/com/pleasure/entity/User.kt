@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 data class User(
     @Id
     val id: Long? = null,
-    val username: String,
-    val surname: String,
+    @Column("full_name")
+    val fullName: String,
     val email: String,
     val password: String,
     @Column("created_at")
