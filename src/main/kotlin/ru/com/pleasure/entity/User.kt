@@ -11,6 +11,7 @@ data class User(
     val id: Long? = null,
     val username: String,
     val surname: String,
+    val email: String,
     val password: String,
     @Column("created_at")
     val createdAt: LocalDateTime = LocalDateTime.now()

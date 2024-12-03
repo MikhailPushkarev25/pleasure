@@ -11,7 +11,8 @@ import ru.com.pleasure.service.UserService
 import ru.pleasure.dto.RequestUser
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
+@CrossOrigin(origins = ["http://localhost:5176"])
 class UserController(
     private val userService: UserService,
     private val jwtUtil: JWTUtil

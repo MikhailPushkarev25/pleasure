@@ -8,6 +8,9 @@
     "username": {
       "type": "string"
     },
+    "email": {
+      "type": "string"
+    },
     "password": {
       "type": "string"
     },
@@ -16,5 +19,5 @@
       "format": "date-time"
     }
   },
-  "required": ["username", "password"]
+  "required": ["username", "email", "password"]
 }

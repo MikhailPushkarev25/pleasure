@@ -17,7 +17,7 @@ class MessageController(
     private val chatService: MessageService
 ) {
 
-    @PostMapping("/messages")
+    @PostMapping("/api/messages")
     suspend fun sendMessage(
         @RequestParam chatId: Long,
         @RequestParam userId: Long,

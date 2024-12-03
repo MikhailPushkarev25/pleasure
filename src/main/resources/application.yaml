@@ -1,30 +1,30 @@
 spring:
   r2dbc:
-    url: ${SPRING_R2DBC_URL}
-    username: ${SPRING_R2DBC_USERNAME}
-    password: ${SPRING_R2DBC_PASSWORD}
+    url: ${SPRING_R2DBC_URL:r2dbc:postgresql://postgres:5432/pleasure_message}
+    username: ${SPRING_R2DBC_USERNAME:postgres}
+    password: ${SPRING_R2DBC_PASSWORD:postgres}
     pool:
       initial-size: 5
       max-size: 20
       max-idle-time: 30s
       min-idle-time: 5s
   flyway:
-    enabled: ${SPRING_FLYWAY_ENABLED}
-    locations: ${SPRING_FLYWAY_LOCATIONS}
+    enabled: ${SPRING_FLYWAY_ENABLED:false}
+    locations: ${SPRING_FLYWAY_LOCATIONS:classpath:db/migration}
     baseline-on-migrate: true
-    user: ${SPRING_FLYWAY_USER}
-    password: ${SPRING_FLYWAY_PASSWORD}
-    url: ${SPRING_FLYWAY_URL}
+    user: ${SPRING_FLYWAY_USER:postgres}
+    password: ${SPRING_FLYWAY_PASSWORD:postgres}
+    url: ${SPRING_FLYWAY_URL:jdbc:postgresql://postgres:5432/pleasure_message}
 
 server:
   port: ${PORT:8080}
   servlet:
-    context-path: ${CONTEXT_PATH}
+    context-path: ${CONTEXT_PATH:/api}
 #http://localhost:8080/webjars/swagger-ui/index.html
 springdoc:
   swagger-ui:
-    path: ${SWAGGER_PATH}
+    path: ${SWAGGER_PATH:/swagger-ui.html}
 
 jwt:
-  secret: ${JWT_SECRET}
-  expiration: ${EXPIRATION}
+  secret: ${JWT_SECRET:mysecretisjustlongenoughforhmac512-01234567890123456789012345678}
+  expiration: ${EXPIRATION:28800}

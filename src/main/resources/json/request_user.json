@@ -8,9 +8,12 @@
     "surname": {
       "type": "string"
     },
+    "email": {
+      "type": "string"
+    },
     "password": {
       "type": "string"
     }
   },
-  "required": ["username", "password", "surname"]
+  "required": ["username", "email", "password", "surname"]
 }

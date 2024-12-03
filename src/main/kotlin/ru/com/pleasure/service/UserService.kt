@@ -4,17 +4,12 @@ import mu.KotlinLogging
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import ru.com.pleasure.entity.User
-import ru.com.pleasure.mapping.toEntity
 import ru.com.pleasure.repository.UserRepository
 import ru.pleasure.dto.RequestUser
-import ru.pleasure.dto.UserDto
-import java.time.LocalDateTime
-import java.util.concurrent.ConcurrentHashMap
 
 @Service
 class UserService(
@@ -47,6 +42,7 @@ class UserService(
         val newUser = User(
             username = request.username,
             password = passwordEncoder.encode(request.password),
+            email = request.email,
             surname = request.surname,
         )
         return userRepository.save(newUser)

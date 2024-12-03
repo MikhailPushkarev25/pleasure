@@ -29,7 +29,7 @@ class SecurityConfig(
             .authenticationManager(authenticationManager)
             .securityContextRepository(securityContextRepository)
             .authorizeExchange {
-                it.pathMatchers("/users/register", "/users/login").permitAll()
+                it.pathMatchers("/api/users/register", "/api/users/login").permitAll()
                     .pathMatchers("/v3/api-docs/**", "/webjars/swagger-ui/**").permitAll()
                     .anyExchange().authenticated()
             }

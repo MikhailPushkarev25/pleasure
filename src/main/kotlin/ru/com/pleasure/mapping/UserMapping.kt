@@ -6,5 +6,6 @@ import ru.pleasure.dto.RequestUser
 fun RequestUser.toEntity(): User = User(
     username = username,
     surname = surname,
+    email = "email",
     password = password,
 )

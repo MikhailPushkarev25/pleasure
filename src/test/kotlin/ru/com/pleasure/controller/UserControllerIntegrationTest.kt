@@ -29,6 +29,7 @@ class UserControllerIntegrationTest : AbstractContainerTest() {
         val requestUser = RequestUser().apply {
             username = "testUsername"
             surname = "testSurname"
+            email = "testEmail"
             password = "testPassword"
         }
 
@@ -42,13 +43,14 @@ class UserControllerIntegrationTest : AbstractContainerTest() {
         val requestUser = RequestUser().apply {
             username = "testUsername"
             surname = "testSurname"
+            email = "testEmail"
             password = "testPassword"
         }
 
         userService.register(requestUser).block()
 
         webTestClient.post()
-            .uri("/users/login")
+            .uri("/api/users/login")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(requestUser)
             .exchange()
@@ -65,6 +67,7 @@ class UserControllerIntegrationTest : AbstractContainerTest() {
         val requestUser = RequestUser().apply {
             username = "testUsername"
             surname = "testSurname"
+            email = "testEmail"
             password = "testPassword"
         }
 
