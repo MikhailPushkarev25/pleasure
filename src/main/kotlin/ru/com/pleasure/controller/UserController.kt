@@ -22,7 +22,7 @@ class UserController(
     suspend fun login(@RequestBody request: RequestUser): ResponseEntity<String> {
         return userService.authenticate(request.email, request.password)
             .map { userDetails ->
-                val token = jwtUtil.generateToken(userDetails)
+                val token = jwtUtil.generateToken(request, userDetails)
                 ResponseEntity.ok(token)
             }
             .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials")))

@@ -20,10 +20,10 @@ class UserService(
     val log = KotlinLogging.logger {  }
 
     fun authenticate(email: String, password: String): Mono<UserDetails> {
-        log.info("Searching for user: $email")
+        log.info("Searching for email: $email")
         return userRepository.findByEmail(email)
             .doOnSubscribe { log.info("User found: $email") }
-            .switchIfEmpty(Mono.error(UsernameNotFoundException("User not found for username: $email")))
+            .switchIfEmpty(Mono.error(UsernameNotFoundException("User not found for email: $email")))
             .flatMap { user ->
                 if (!passwordEncoder.matches(password, user.password)) {
                     Mono.error(BadCredentialsException("Invalid password"))

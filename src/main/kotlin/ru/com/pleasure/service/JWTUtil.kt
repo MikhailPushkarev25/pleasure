@@ -9,6 +9,8 @@ import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
+import ru.pleasure.dto.RequestUser
+import java.time.LocalDateTime
 import java.util.*
 
 private val logger = KotlinLogging.logger {  }
@@ -29,10 +31,12 @@ class JWTUtil(
 
     fun getUsernameFromToken(token: String): String = getAllClaimsFromToken(token).subject
 
-    fun generateToken(user: UserDetails): String {
+    fun generateToken(request: RequestUser, user: UserDetails): String {
         val claims = mutableMapOf<String, Any>()
         claims["authorities"] = user.authorities
         claims["enabled"] = user.isEnabled
+        claims["user"] = request
+        claims["createdAt"] = LocalDateTime.now()
         return doGenerateToken(user.username, claims)
     }
 
